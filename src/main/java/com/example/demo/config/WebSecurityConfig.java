@@ -4,6 +4,7 @@ import com.example.demo.security.JWTConfigurer;
 import com.example.demo.security.JwtAccessDeniedHandler;
 import com.example.demo.security.JwtAuthenticationEntryPoint;
 import com.example.demo.security.TokenProvider;
+import com.example.demo.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -66,6 +67,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private JWTConfigurer securityConfigurerAdapter() {
         return new JWTConfigurer(tokenProvider);
+    }
+
+    @Bean
+    public AuthService loginService() {
+
+        try {
+            return new AuthService(authenticationManager());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
