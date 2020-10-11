@@ -69,6 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new JWTConfigurer(tokenProvider);
     }
 
+    /*
     @Bean
     public AuthService loginService() {
 
@@ -79,5 +80,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         }
         return null;
     }
+     */
 
 }

@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.controller.dto.LoginDto;
 import com.example.demo.security.CustomUserDetails;
+import io.jsonwebtoken.Claims;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -11,13 +13,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 
+@Service
+@RequiredArgsConstructor
 public class AuthService {
 
-    private final AuthenticationManager authenticationManager;
-
-    public AuthService(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-    }
 
     public Authentication test(LoginDto loginDto) {
 
@@ -29,9 +28,18 @@ public class AuthService {
         return authentication;
 
          */
-        
-        UserDetails userDetails = CustomUserDetails.builder().ID(loginDto.getUsername()).NAME(loginDto.getUsername()).AUTHORITY("ROLE_USER").build();
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+
+        //JwtAuthenticationToken --> Oauth 디펜던시 추가해야 하는 듯...
+
+        UserDetails userDetails = CustomUserDetails.builder()
+                .ID(loginDto.getUsername())
+                .NAME(loginDto.getUsername())
+                .AUTHORITY("ROLE_USER")
+                .build();
+
+        //Claims claims = jwtUtil.getClaims(token.substring("Bearer ".length()));
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, loginDto.getPassword(), userDetails.getAuthorities());
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
